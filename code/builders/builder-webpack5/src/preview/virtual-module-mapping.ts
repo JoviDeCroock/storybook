@@ -58,7 +58,7 @@ export const getVirtualModules = async (options: Options) => {
       previewAnnotations,
     }
     // We need to double escape `\` for webpack. We may have some in windows paths
-  ).replace(/\\/g, '\\\\');
+  ).replace(/\\/g,"\\\\").replace("&#x3D;", "=")
   entries.push(configEntryPath);
 
   return {

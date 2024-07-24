@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import * as stories from './Button.stories';
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react?x=y';
 
 const { CSF3Primary, WithLoader, Modal } = composeStories(stories);
 

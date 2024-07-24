@@ -61,7 +61,7 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
   const typescriptOptions = await presets.apply('typescript', {}, options);
   const frameworkOptions = await presets.apply<any>('frameworkOptions');
 
-  return presets.apply(
+  const config = await presets.apply(
     'webpack',
     {},
     {
@@ -70,8 +70,14 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
       frameworkOptions,
     }
   ) as any;
+  const staticModules = config.plugins[0]._staticModules;
+  const moduleKey = Object.keys(staticModules).find(key => key.endsWith('storybook-config-entry.js'))
+  const moduleValue = staticModules[moduleKey as string]
+  const moduleNewValue = moduleValue.replace("&#x3D;", "=");
+  staticModules[moduleKey as string] = moduleNewValue;
+  return config;
 };
-
+// obj = config.plugins[0]._staticModules,moduleKey = Object.keys(obj).find(key => key.endsWith('storybook-config-entry.js')),moduleValue = obj[moduleKey],moduleNewValue = moduleValue.replace("&#x3D;", "=");obj[moduleKey] = moduleNewValue;return config
 let asyncIterator: ReturnType<StarterFunction> | ReturnType<BuilderFunction>;
 
 export const bail: WebpackBuilder['bail'] = async () => {
